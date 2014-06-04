@@ -3,7 +3,7 @@ require.config({
     paths: {
         jquery: 'libs/jquery-2.0.3.min',
         socketIO: 'libs/socket.io-1.0.4',
-        settings: 'settings'
+        settings: 'settings',
         jquerycookie: 'libs/jquery.cookie'
     }
   });
