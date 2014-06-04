@@ -39,14 +39,14 @@ require([
   });
 
   // Create socket
-  var socket = io('http://localhost');
+  //var socket = io('http://localhost');
 
   // init game
   //socket.emit("init");
-
+/*
   socket.on('newPlayers', function( players ){
     console.log(players);
   });
-
+*/
 
 });
