@@ -22,14 +22,13 @@ require([
   Timer
 ) {
 
-  //Game.init();
-  $("#game").snake();
+  Game.start();
+
   //$.cookie('playerID', 'value');
   //console.log($.cookie('name'));
   if($.cookie('name')){
     console.log("got name");
   }
-
 
   $.ajax({
     url: '/getgame',
@@ -37,16 +36,5 @@ require([
   }).done(function(data){
     console.log(data);
   });
-
-  // Create socket
-  //var socket = io('http://localhost');
-
-  // init game
-  //socket.emit("init");
-/*
-  socket.on('newPlayers', function( players ){
-    console.log(players);
-  });
-*/
 
 });

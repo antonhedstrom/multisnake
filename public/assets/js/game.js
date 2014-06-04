@@ -5,6 +5,11 @@ define([
 ], function(
   $
 ){
+  var exports = {};
+
+  exports.start = function() {
+    $("#game").snake();
+  };
   // Array of players
   var players = [];
   var me = new Snake($("#game"), {start_pos: {x: 3, y: 3}});
@@ -123,5 +128,5 @@ define([
     $(this).removeClass("paused");
   }
 
-
+  return exports;
 });
