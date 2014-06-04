@@ -13,16 +13,18 @@ require([
   'network',
   'jquerycookie',
   'game',
-  'timer'
+  'timer',
+  'settings'
 ], function(
   $,
   Network,
   Cookie,
   Game,
-  Timer
+  Timer,
+  Settings
 ) {
 
-  Game.start();
+  Game.start(Settings.playground);
 
   //$.cookie('playerID', 'value');
   //console.log($.cookie('name'));
@@ -30,11 +32,5 @@ require([
     console.log("got name");
   }
 
-  $.ajax({
-    url: '/getgame',
-    method: 'GET'
-  }).done(function(data){
-    console.log(data);
-  });
 
 });

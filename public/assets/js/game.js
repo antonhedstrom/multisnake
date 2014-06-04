@@ -7,24 +7,33 @@ define([
 ){
   var exports = {};
 
-  exports.start = function() {
-    $("#game").snake();
-  };
+  exports.start = initGame;
+
   // Array of players
   var players = [];
   var me = new Snake($("#game"), {start_pos: {x: 3, y: 3}});
   var paused = false;
 
-  // Register as jQuery plugin
-
-
-  // Public default settings (overridable)
-
+  var defaults = {
+    size: {x:20, y:20}
+  };
 
   function initGame(options) {
     var self = this;
-    var settings = $.extend(true, {}, options);
+    var settings = $.extend(true, {}, defaults, options);
 
+    buildPlayground(settings);
+    initKeyBindings();
+
+    return {
+      addPlayer : function() {
+        //players.push(new Snake(self, player));
+        return addPlayer.apply(self, arguments);
+      }
+    };
+  }
+
+  function buildPlayground(settings) {
     var $tiles_container = $("<div />").attr("id","tiles");
     var $tile_row = $("<div />")
       .addClass("tilerow")
@@ -40,30 +49,20 @@ define([
       });
     var $score = $("<div />").attr("id", "score");
     var i;
-    var j;
+    var $element = $(settings.target);
 
     for (i = 0; i < settings.size.x; i++) {
       $tile.removeClass("tilecol_" + (i - 1));
       $tile.addClass("tilecol_" + i);
       $tile_row.append($tile.clone());
     }
-    for (j = 0; j < settings.size.y; j++) {
-      $tile_row.attr("id", "tilerow_" + j);
+    for (i = 0; i < settings.size.y; i++) {
+      $tile_row.attr("id", "tilerow_" + i);
       $tiles_container.append($tile_row.clone());
     }
-    self.append($tiles_container);
-    self.append($score);
 
-    generateFood($(self), settings.size.x, settings.size.y);
-
-    initKeyBindings();
-
-    return {
-      addPlayer : function() {
-        //players.push(new Snake(self, player));
-        return addPlayer.apply(self, arguments);
-      }
-    };
+    $element.append($tiles_container);
+    $element.append($score);
   }
 
   function initKeyBindings() {

@@ -6,6 +6,10 @@ define(function() {
     },
     snake: {
       speed: 6
+    },
+    playground: {
+      target: "#game",
+      tiles: {x:10, y: 10}
     }
   };
 });
