@@ -15,6 +15,12 @@ define([
     console.log("Connected");
   });
 
+  socket.on('client_custom', function(){
+    console.log('Only a client emitted event emitted :D');
+  });
+
+  socket.emit('client_custom');
+
   socket.on('disconnect', function() {
     console.log("Disconnect");
   });
