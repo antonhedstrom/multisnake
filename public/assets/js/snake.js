@@ -1,7 +1,12 @@
+define([
+  'network',
+  ], function(
+    Network
+  ){
 
-// Snake!
-(function(exports){
-  exports.Snake = Snake;
+  var exports = {};
+
+  exports = Snake;
 
   // CONSTANTS
   var DIR = {UP : 1, RIGHT : 2, DOWN : 3, LEFT : 4};
@@ -192,6 +197,7 @@
         }
       }
       else {
+
         self.gameover();
       }
     }, (10 - self.speed) * 30); // Update
@@ -250,4 +256,6 @@
     return this.$myhome.find("#tilerow_"+y + " .tilecol_" + x);
   }
 
-})(window);
+  return exports;
+
+});

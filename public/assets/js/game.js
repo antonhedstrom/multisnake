@@ -7,7 +7,7 @@ define([
 ], function(
   $,
   Settings,
-  Snake_,
+  Snake,
   SnakePlugin,
   Network
 ){
