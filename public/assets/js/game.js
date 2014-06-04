@@ -21,7 +21,7 @@ define([
   var paused = false;
 
   var defaults = {
-    size: {x:20, y:20}
+    size: {x:20, y:11}
   };
 
   var intervalID;
@@ -89,7 +89,7 @@ define([
     });
   }
 
-  function addPlayer(player, isMe) {
+  function addPlayer(player) {
     var newPlayer = {
       home: $(Settings.playground.target),
       player: player
@@ -129,9 +129,9 @@ define([
   }
 
   function run() {
-    for (var i in players) {
-      players[i].run();
-    }
+    $.each(players, function(idx, player) {
+      player[i].run();
+    });
     $(this).removeClass("paused");
   }
 
@@ -151,6 +151,9 @@ define([
   }
 
   function startGame() {
+    $.each(players, function(idx, player) {
+      player[i].start();
+    });
     intervalID = window.setInterval(function() {
       $.each(players, function(idx, player) {
         player.tick();

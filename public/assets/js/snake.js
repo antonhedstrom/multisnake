@@ -100,102 +100,99 @@
     this.controlls = controlls;
 
     $("body").keypress(function(e) {
-      queue(self.controlls[e.keyCode] || false);
-      if ( !self.is_running && !self.is_game_over ) {
-        queue(self.controlls[e.keyCode] || false, true);
+      self.queue(self.controlls[e.keyCode] || false);
+      if ( !(self.is_running || self.is_game_over) ) {
+        self.queue(self.controlls[e.keyCode] || false, true);
         if ( self.action_queue.length > 0 ) {
           // We have actions, lets start!
-          self.run();
+          self.start();
         }
       }
 
-      /*
-        Function to check if we should queue action.
-        * Dont queue more than 2 actions.
-        * Dont queue an action that make the snake turn 180 degrees.
-        * Dont queue an action that means going same direction as we move.
-      */
-      function queue(action, allow_same_dir) {
-        var zero_based_idx;
-        if ( !action ) {
-          return;
-        }
-        zero_based_idx = action - 1;
-
-        if ( self.action_queue.length == 0
-             && (((zero_based_idx + 2) % 4) + 1 != self.direction) // Prevent 180 turn
-             && (action != self.direction || allow_same_dir ) // Prevent same direct (no reason)
-          ) {
-          self.action_queue.push(action);
-        }
-        else if (self.action_queue.length == 1) {
-          self.action_queue.push(action);
-        }
-      }
     });
   };
 
   Snake.prototype.tick = function() {
+    if ( !this.is_running ) {
+      return;
+    }
+
+    var current_pos = this.body[this.body.length - 1];
+    var new_pos = {
+      x: current_pos.x,
+      y: current_pos.y
+    };
+    var $food;
+
+    if ( this.action_queue.length > 0 ) {
+      this.direction = this.action_queue.shift();
+    }
+    switch(this.direction) {
+      case DIR.UP :
+        new_pos.y--;
+        this.body.push(new_pos);
+        break;
+      case DIR.RIGHT :
+        new_pos.x++;
+        this.body.push(new_pos);
+        break;
+      case DIR.DOWN :
+        new_pos.y++;
+        this.body.push(new_pos);
+        break;
+      case DIR.LEFT :
+        new_pos.x--;
+        this.body.push(new_pos);
+        break;
+    }
+
+    if ( this.isAlive() ) {
+      if ( this.findTile(new_pos.x, new_pos.y).hasClass("food") ) {
+        $food = this.findTile(new_pos.x, new_pos.y);
+        //Network.foodEaten($food.data("id"), player.id);
+        this.growth += this.growth + 3;
+        this.score += $food.data("score");
+        console.log("Du har " + this.score + " poäng.");
+        $food.removeClass("food");
+      }
+
+      this.updateSnakeUI(this.growth == 0);
+      if ( this.growth > 0 ) {
+        this.growth--;
+      }
+    }
+    else {
+      this.gameover();
+    }
 
   };
 
-  Snake.prototype.run = function() {
-    var self = this;
-    if ( this.is_running ) {
+  Snake.prototype.start = function() {
+    this.is_running = true;
+  };
+
+  /*
+    Function to check if we should queue action.
+    * Dont queue more than 2 actions.
+    * Dont queue an action that make the snake turn 180 degrees.
+    * Dont queue an action that means going same direction as we move.
+  */
+  Snake.prototype.queue = function(action, allow_same_dir) {
+    var zero_based_idx;
+    if ( !action ) {
       return;
     }
-    this.is_running = true;
-    self.interval_id = window.setInterval(function() {
-      var current_pos = self.body[self.body.length - 1];
-      var new_pos = {
-        x: current_pos.x,
-        y: current_pos.y
-      };
-      var $food;
+    zero_based_idx = action - 1;
 
-      if ( self.action_queue.length > 0 ) {
-        self.direction = self.action_queue.shift();
-      }
-      switch(self.direction) {
-        case DIR.UP :
-          new_pos.y--;
-          self.body.push(new_pos);
-          break;
-        case DIR.RIGHT :
-          new_pos.x++;
-          self.body.push(new_pos);
-          break;
-        case DIR.DOWN :
-          new_pos.y++;
-          self.body.push(new_pos);
-          break;
-        case DIR.LEFT :
-          new_pos.x--;
-          self.body.push(new_pos);
-          break;
-      }
-
-      if ( self.isAlive() ) {
-        if ( self.findTile(new_pos.x, new_pos.y).hasClass("food") ) {
-          $food = self.findTile(new_pos.x, new_pos.y);
-          //Network.foodEaten($food.data("id"), player.id);
-          self.growth += self.growth + 3;
-          self.score += $food.data("score");
-          console.log("Du har " + self.score + " poäng.");
-          $food.removeClass("food");
-        }
-
-
-        self.updateSnakeUI(self.growth == 0);
-        if ( self.growth > 0 ) {
-          self.growth--;
-        }
-      }
-      else {
-        self.gameover();
-      }
-    }, (10 - self.speed) * 30); // Update
-
+    if ( this.action_queue.length == 0
+         && (((zero_based_idx + 2) % 4) + 1 != this.direction) // Prevent 180 turn
+         && (action != this.direction || allow_same_dir ) // Prevent same direct (no reason)
+      ) {
+      this.action_queue.push(action);
+    }
+    else if (this.action_queue.length == 1) {
+      this.action_queue.push(action);
+    }
   };
 
   Snake.prototype.pause = function() {
@@ -239,7 +236,7 @@
       this.findTile(tail.x, tail.y).addClass("tail");
     }
     this.findTile(prev_head.x, prev_head.y).removeClass("head");
-    this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : "ff"));
+    this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : ""));
   };
 
   function calcFoodScore(food) {

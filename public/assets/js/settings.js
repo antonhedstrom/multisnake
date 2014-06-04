@@ -2,7 +2,8 @@ define(function() {
   return {
     server: {
       //url: '10.20.28.55'
-      url: '10.20.28.109'
+      //url: '10.20.28.109'
+      url: 'localhost'
     },
     game: {
       speed: 6
