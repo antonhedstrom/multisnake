@@ -27,9 +27,17 @@ define([
     console.log("Player died :( Fuck him.", player);
   });
 
+  socket.on('newFood', function(food){
+    console.log("food generated", food);
+  });
+
+  socket.on('foodEaten', function(food){
+    console.log("food has been eaten", food);
+  });
+
   socket.on('movePlayer', function(data) {
     // data: { player: {...}, turn: "left|right"}
-    console.log("Player died :( Fuck him.", data);
+    console.log("Player moved :( Fuck him.", data);
   });
 
   return exports;
