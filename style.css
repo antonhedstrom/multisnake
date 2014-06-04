@@ -1,0 +1,56 @@
+body {
+  font-family: "verdana", "arial";
+  font-size: 14pt;
+  background-color: #EEE;
+  color: #666;
+  margin:0;
+  padding:0;
+}
+p {
+  margin:1em;
+}
+#game {
+  position:absolute;
+  text-align:center;
+  width:100%;
+}
+#game #tiles {
+  border:4px #555 solid;
+  background-color:#FFF;
+  display:inline-block;
+  width:400px;
+  height:400px;
+  margin:0 auto;
+  box-shadow: 1px 1px 2px 0px #AAA inset;
+}
+#game #tiles .tile {
+  display:inline-block;
+  float:left;
+  /* Place border inside element: */
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  border:0px #FFF solid;
+  border-collapse: collapse;
+}
+#game #tiles .tile:nth-child(2n) {
+
+}
+#game #tiles .tile.snake {
+  background-color:green;
+  border-color:green;
+  box-shadow: 1px 1px 1px #AAA;
+}
+#game #tiles .tile.food {
+  background-color:blue;
+  border-radius:10px;
+}
+#game #tiles .tile.head {
+  background-color:darkgreen;
+}
+#game #tiles .tile.dead {
+  background-color:red;
+}
+/* PAUSED */
+#game.paused #tiles .tile {
+  opacity: 0.6;
+}

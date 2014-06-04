@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Snake</title>
+	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	  <meta name="description" content="The ABC game" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="javascript/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="javascript/timer.js"></script>
+    <script type="text/javascript" src="javascript/highscore.js"></script>
+    <script type="text/javascript" src="javascript/snake.js"></script>
+    <script type="text/javascript" src="javascript/snake_plugin.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var controlls1 = [];
+        controlls1[119] = "UP";
+        controlls1[97] = "LEFT";
+        controlls1[115] = "DOWN";
+        controlls1[100] = "RIGHT";
+
+        var controlls2 = [];
+        controlls2[105] = "UP";
+        controlls2[106] = "LEFT";
+        controlls2[107] = "DOWN";
+        controlls2[108] = "RIGHT";
+
+        var snake_1 = {
+          controlls : controlls1,
+          start_pos : {x:10, y: 20}
+        };
+        var snake_2 = {
+          controlls : controlls2,
+          start_pos : {x:20, y: 20}
+        };
+
+        $("#game").snake();
+        $("#game").snake("addPlayer", snake_1);
+        //$("#game").snake("addPlayer", snake_2);
+          //.addPlayer(snake_2);
+
+      });
+    </script>
+  </head>
+  <body>
+  	<div class="instructions">
+      <p>
+        This is snake.
+      </p>
+  	</div>
+
+    <!-- Game container -->
+    <div id="game"></div>
+
+  </body>
+</html>
