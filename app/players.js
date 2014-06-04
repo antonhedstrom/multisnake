@@ -1,13 +1,25 @@
-var playerlist = [];
+var _ = require('underscore');
+
+var playerlist = [],
+    playerId = 0;
 
 module.exports = {
 
-  numberOfPlayers: playerlist.length,
   playerList: playerlist,
 
   addPlayer: function(playerObj){
+    playerId = playerId + 1;
+    _.extend(playerObj, {playerId: playerId});
+
+
     playerlist.push(playerObj);
     //console.log(playerlist);
-    return playerlist;
+
+    var returnobj = {
+      me: playerObj,
+      players: playerlist
+    }
+
+    return returnobj;
   }
 }

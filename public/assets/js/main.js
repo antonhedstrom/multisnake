@@ -27,21 +27,25 @@ require([
 
   //Game.init();
   $("#game").snake();
-  $.cookie('playerID', 'value');
-  //console.log($.cookie());
+  //$.cookie('playerID', 'value');
+  //console.log($.cookie('name'));
+  if($.cookie('name')){
+    console.log("got name");
+  }
+
 
   $.ajax({
-    url: '/init',
-    method: 'POST'
-  }, function(){
-    console.log("lol");
+    url: '/getgame',
+    method: 'GET'
+  }).done(function(data){
+    console.log(data);
   });
 
   // Create socket
   var socket = io('http://localhost');
 
   // init game
-  socket.emit("init");
+  //socket.emit("init");
 
   socket.on('newPlayers', function( players ){
     console.log(players);
