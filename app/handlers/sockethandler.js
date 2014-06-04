@@ -7,40 +7,26 @@ var isInArray = function(obj, list) {
             return true;
         }
     }
-
     return false;
 };
 
 module.exports = function(io){
   return {
-    movement: function(data){
+    movement: function( data ){
       console.log("YAY I got a movement!");
+      io.emit('movePlayer', {player: data.player, turn: data.turn});
     },
     score: function(){
 
     },
-    dead: function(){
-
+    dead: function(player){
+      io.emit('deadPlayer', player)
     },
     init: function( data ){
       console.log("YAY I got someone that wants to play snake!!");
 
       // Create the new user
-      var newPlayer = {
-        playerId: players.numberOfPlayers + 1,
-        startPos: {x: 4, y: 8}
-      };
-
-      //console.log(players.playerList);
-      /*if(!isInArray(newPlayer, players.playerList)){
-        console.log("is not in array");
-      }*/
-
-      // add player
-      players.addPlayer(newPlayer);
-      
-      // publish to participants
-      io.emit('newPlayer', newPlayer);
+ 
       
     }
   }
