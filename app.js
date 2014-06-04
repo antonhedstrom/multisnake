@@ -1,15 +1,28 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
+var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var sockethandler = require('./app/handlers/sockethandler')(io);
+var ajaxhandler = require('./app/handlers/ajaxhandler')(io);
+
+app.use(
+  express.static( path.join( __dirname, 'public' ) )
+);
 
 app.get('/', function(req, res){
-  res.send('index entry');
+  res.sendfile('index.html');
 });
 
+app.get('/getgame', ajaxhandler.getgame);
+
+
+
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
+  socket.on('movement', sockethandler.movement);
+  socket.on('score', sockethandler.score);
+  socket.on('dead', sockethandler.dead);
+  socket.on('init', sockethandler.init);
 });
 
 http.listen(1337, function(){
