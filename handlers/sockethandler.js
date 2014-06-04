@@ -1,14 +1,21 @@
-module.exports = {
-  movement: function(){
-    console.log("YAY I got a movement!");
-  },
-  score: function(){
+//var io = require('socket.io');
 
-  },
-  dead: function(){
+module.exports = function(io){
+  return {
+    movement: function(){
+      console.log("YAY I got a movement!");
+    },
+    score: function(){
 
-  },
-  new: function(){
-    console.log("YAY I got someone that wants to play snake!!");
+    },
+    dead: function(){
+
+    },
+    new: function( data ){
+      console.log("YAY I got someone that wants to play snake!!");
+
+      io.emit('yolo');
+      
+    }
   }
 };
