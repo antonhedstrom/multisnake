@@ -7,6 +7,8 @@ define([
 ) {
   var exports = {};
 
+
+
   // Open connection
   var socket = SocketIO('http://' + Settings.server.url);
 

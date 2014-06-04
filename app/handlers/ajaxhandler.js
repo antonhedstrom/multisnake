@@ -5,7 +5,10 @@ module.exports = function(io){
     getgame: function(req, res){
 
       var newPlayer = {
-        startPos: {x: 4, y: 8}
+        startPos: {
+          x: Math.floor(Math.random()*4),
+          y: Math.floor(Math.random()*8)
+        }
       };
 
       //console.log(players.playerList);
@@ -15,7 +18,7 @@ module.exports = function(io){
 
       // add player
       var playerObj = players.addPlayer(newPlayer);
-      
+
       // publish to participants
       io.sockets.emit('newPlayer', playerObj.me);
       res.json(playerObj);

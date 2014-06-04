@@ -7,8 +7,10 @@
   var DIR = {UP : 1, RIGHT : 2, DOWN : 3, LEFT : 4};
 
   /* Snake class */
-  function Snake(home, options) {
-    this.$myhome = home; // The jQuery object where I live
+  function Snake(options) {
+    this.player;
+
+    this.$myhome; // The jQuery object where I live
     this.interval_id;   //Save id of interval so we can stop it.
     this.default_pos;   //Start here
     this.food;          //There might be foooood.
@@ -25,13 +27,14 @@
     this.action_queue = []; //Queue when controller is pressed
     this.controlls = [];    //Array of how to control the snake
 
-    this.initSnake(options.startPos);
-    this.initKeyBindings(options.controlls);
+    this.initSnake(options);
+    this.initKeyBindings();
   }
 
-  Snake.prototype.initSnake = function(init_pos) {
-    var start_pos = init_pos;
-    this.default_pos = start_pos;
+  Snake.prototype.initSnake = function(options) {
+    this.default_pos = options.player.startPos;
+    this.player = options.player;
+    this.$myhome = options.home;
     this.reset(); // Sets variables to default value
   };
 
@@ -59,11 +62,17 @@
   Snake.prototype.initKeyBindings = function(controlls) {
     var self = this;
     var action;
+
     var default_controlls = [];
     default_controlls[119] = "UP";
     default_controlls[97] = "LEFT";
     default_controlls[115] = "DOWN";
     default_controlls[100] = "RIGHT";
+
+    if ( !this.player.isMe ) {
+      console.log("I am not me.");
+      return;
+    }
 
     if ( !controlls ) {
       controlls = default_controlls;
@@ -126,6 +135,9 @@
     });
   };
 
+  Snake.prototype.tick = function() {
+
+  };
 
   Snake.prototype.run = function() {
     var self = this;
@@ -166,6 +178,7 @@
       if ( self.isAlive() ) {
         if ( self.findTile(new_pos.x, new_pos.y).hasClass("food") ) {
           $food = self.findTile(new_pos.x, new_pos.y);
+          //Network.foodEaten($food.data("id"), player.id);
           self.growth += self.growth + 3;
           self.score += $food.data("score");
           console.log("Du har " + self.score + " poäng.");
@@ -181,7 +194,7 @@
       else {
         self.gameover();
       }
-    }, (10 - self.speed) * 10); // Update
+    }, (10 - self.speed) * 30); // Update
 
   };
 
@@ -220,13 +233,13 @@
     var tail      = delete_tail ? this.body.shift() : this.body[0];
 
     if ( delete_tail ) {
-      this.findTile(tail.x, tail.y).removeClass("snake head tail");
+      this.findTile(tail.x, tail.y).removeClass("snake me head tail");
     }
     else {
       this.findTile(tail.x, tail.y).addClass("tail");
     }
     this.findTile(prev_head.x, prev_head.y).removeClass("head");
-    this.findTile(head.x, head.y).addClass("snake head");
+    this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : "ff"));
   };
 
   function calcFoodScore(food) {

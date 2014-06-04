@@ -24,6 +24,8 @@ define([
     size: {x:20, y:20}
   };
 
+  var intervalID;
+
   function initGame(options) {
     var self = this;
     var settings = $.extend(true, {}, defaults, options);
@@ -33,6 +35,7 @@ define([
 
     addOtherPlayers();
 
+    startGame();
     // TODO: Timeout: request new player and add me
   }
 
@@ -86,8 +89,12 @@ define([
     });
   }
 
-  function addPlayer(player) {
-    players.push(new Snake($(Settings.playground.target), player));
+  function addPlayer(player, isMe) {
+    var newPlayer = {
+      home: $(Settings.playground.target),
+      player: player
+    };
+    players.push(new Snake(newPlayer));
   }
 
   function addOtherPlayers() {
@@ -99,6 +106,8 @@ define([
       for (var i in players) {
         addPlayer(players[i]);
       }
+      data.me.isMe = true;
+      addPlayer(data.me);
     });
   }
 
@@ -139,6 +148,14 @@ define([
       players[i].reset();
     }
     $(this).removeClass("paused");
+  }
+
+  function startGame() {
+    intervalID = window.setInterval(function() {
+      $.each(players, function(idx, player) {
+        player.tick();
+      });
+    }, (10 - Settings.game.speed) * 30);
   }
 
   return exports;
