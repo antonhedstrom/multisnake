@@ -6,13 +6,6 @@
   // CONSTANTS
   var DIR = {UP : 1, RIGHT : 2, DOWN : 3, LEFT : 4};
 
-  var default_controlls = [];
-  default_controlls[119] = "UP";
-  default_controlls[97] = "LEFT";
-  default_controlls[115] = "DOWN";
-  default_controlls[100] = "RIGHT";
-
-
   /* Snake class */
   function Snake(home, options) {
     this.$myhome = home; // The jQuery object where I live
@@ -66,6 +59,16 @@
   Snake.prototype.initKeyBindings = function(controlls) {
     var self = this;
     var action;
+    var default_controlls = [];
+    default_controlls[119] = "UP";
+    default_controlls[97] = "LEFT";
+    default_controlls[115] = "DOWN";
+    default_controlls[100] = "RIGHT";
+
+    if ( !controlls ) {
+      controlls = default_controlls;
+    }
+
     for ( var i in controlls ) {
       switch (controlls[i]) {
         case "UP" :
