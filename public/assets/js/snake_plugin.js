@@ -6,7 +6,7 @@
     init : function(options) {
       return initGame.apply(this, options);
     },
-    addPlayer : function() { 
+    addPlayer : function() {
       return addPlayer.apply(this, arguments);
     }
   };
@@ -24,7 +24,7 @@
       return methods.init.apply(this, arguments);
     } else {
       $.error( 'Method ' +  method + ' does not exist on jQuery.snake' );
-    }    
+    }
   };
 
   // Public default settings (overridable)
@@ -69,7 +69,7 @@
 
     initKeyBindings();
 
-    return { 
+    return {
       addPlayer : function() {
         //players.push(new Snake(self, player));
         return addPlayer.apply(self, arguments);
@@ -137,20 +137,6 @@
       players[i].reset();
     }
     $(this).removeClass("paused");
-  }
-
-  function generateFood(playground, max_x, max_y) {
-    var food = {};
-    while (true) {
-      food.x = Math.floor(Math.random() * max_x);
-      food.y = Math.floor(Math.random() * max_y);
-
-      if ( !playground.find("tilerow_" + food.x)
-                      .find("tilecol_" + food.y)
-                      .hasClass("snake") ) {
-        return food;
-      }
-    }
   }
 
 

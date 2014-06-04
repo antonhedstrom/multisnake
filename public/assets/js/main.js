@@ -10,17 +10,13 @@ require.config({
 
 require([
   'jquery',
-  'network',
   'jquerycookie',
   'game',
-  'timer',
   'settings'
 ], function(
   $,
-  Network,
   Cookie,
   Game,
-  Timer,
   Settings
 ) {
 

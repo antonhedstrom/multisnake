@@ -1,9 +1,15 @@
 define([
   'jquery',
+  'settings',
   'snake',
-  'snake_plugin'
+  'snake_plugin',
+  'network',
 ], function(
-  $
+  $,
+  Settings,
+  Snake_,
+  SnakePlugin,
+  Network
 ){
   var exports = {};
 
@@ -11,7 +17,7 @@ define([
 
   // Array of players
   var players = [];
-  var me = new Snake($("#game"), {start_pos: {x: 3, y: 3}});
+  //var me = new Snake($(Settings.playground.target), {start_pos: {x: 3, y: 3}});
   var paused = false;
 
   var defaults = {
@@ -25,12 +31,9 @@ define([
     buildPlayground(settings);
     initKeyBindings();
 
-    return {
-      addPlayer : function() {
-        //players.push(new Snake(self, player));
-        return addPlayer.apply(self, arguments);
-      }
-    };
+    addOtherPlayers();
+
+    // TODO: Timeout: request new player and add me
   }
 
   function buildPlayground(settings) {
@@ -84,8 +87,19 @@ define([
   }
 
   function addPlayer(player) {
-    players.push(new Snake(this, player));
-    return this;
+    players.push(new Snake($(Settings.playground.target), player));
+  }
+
+  function addOtherPlayers() {
+    $.ajax({
+      url: '/getgame',
+      method: 'GET'
+    }).done(function(data){
+      var players = data.players;
+      for (var i in players) {
+        addPlayer(players[i]);
+      }
+    });
   }
 
   function pauseOrRun() {

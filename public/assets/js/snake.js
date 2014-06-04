@@ -25,7 +25,7 @@
     this.action_queue = []; //Queue when controller is pressed
     this.controlls = [];    //Array of how to control the snake
 
-    this.initSnake(options.start_pos);
+    this.initSnake(options.startPos);
     this.initKeyBindings(options.controlls);
   }
 
@@ -132,7 +132,6 @@
     if ( this.is_running ) {
       return;
     }
-    this.generateFood();
     this.is_running = true;
     self.interval_id = window.setInterval(function() {
       var current_pos = self.body[self.body.length - 1];
@@ -171,9 +170,6 @@
           self.score += $food.data("score");
           console.log("Du har " + self.score + " poäng.");
           $food.removeClass("food");
-          window.setTimeout(function() {
-            self.generateFood();
-          }, Math.random() * 1000 * 3);
         }
 
 
@@ -235,22 +231,6 @@
 
   function calcFoodScore(food) {
     return food.score;
-  }
-
-  Snake.prototype.generateFood = function() {
-    var new_food = {};
-    var $candidate;
-    while (true) {
-      new_food.x = Math.floor(Math.random() * 40);
-      new_food.y = Math.floor(Math.random() * 40);
-      $candidate = this.findTile(new_food.x, new_food.y);
-      if ( $candidate.length != 0 && !$candidate.hasClass("snake") ) {
-        $candidate.addClass("food").data("score", Math.floor(Math.random() * 4));
-        this.food = new_food;
-        break;
-      }
-    }
-    return {};
   }
 
   Snake.prototype.findTile = function(x, y) {
