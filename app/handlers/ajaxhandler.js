@@ -17,7 +17,7 @@ module.exports = function(io){
       var playerObj = players.addPlayer(newPlayer);
       
       // publish to participants
-      io.emit('newPlayer', playerObj.me);
+      io.sockets.emit('newPlayer', playerObj.me);
       res.json(playerObj);
     }
   }

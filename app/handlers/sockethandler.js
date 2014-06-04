@@ -20,7 +20,7 @@ module.exports = function(io){
 
     },
     dead: function(player){
-      io.emit('deadPlayer', player)
+      io.sockets.emit('deadPlayer', player)
     },
     init: function( data ){
       console.log("YAY I got someone that wants to play snake!!");
