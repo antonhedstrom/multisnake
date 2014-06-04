@@ -15,7 +15,7 @@ require([
   'timer'
 ], function(
   $,
-  SocketIO,
+  io,
   Game,
   Snake,
   SnakePlugin,
@@ -24,5 +24,18 @@ require([
 
   //Game.init();
   $("#game").snake();
+
+  var socket = io('http://localhost');
+  socket.emit("new");
+  socket.on('connect', function(){
+    console.log("Connect");
+
+    socket.on('event', function(data){
+      console.log("Event");
+    });
+    socket.on('disconnect', function(){
+      console.log("Disconnect");
+    });
+  });
 
 });
