@@ -1,10 +1,10 @@
 define([
   'jquery',
-  'snake'
+  'snake',
+  'snake_plugin'
 ], function(
   $
 ){
-
   // Array of players
   var players = [];
   var me = new Snake($("#game"), {start_pos: {x: 3, y: 3}});

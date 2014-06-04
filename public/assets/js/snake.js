@@ -30,7 +30,7 @@
   }
 
   Snake.prototype.initSnake = function(init_pos) {
-    var start_pos = init_pos ? init_pos : {x: 2, y: 2};
+    var start_pos = init_pos;
     this.default_pos = start_pos;
     this.reset(); // Sets variables to default value
   };
