@@ -5,7 +5,7 @@ module.exports = function(io){
     getgame: function(req, res){
 
       var newPlayer = {
-        startPos: {x: 4, y: 8}
+        startPos: {x: Math.random(), y: Math.random()}
       };
 
       //console.log(players.playerList);
