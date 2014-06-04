@@ -26,11 +26,11 @@
     this.controlls = [];    //Array of how to control the snake
 
     this.initSnake(options.start_pos);
-    this.initKeyBindings(options.controlls || default_controlls);
+    this.initKeyBindings(options.controlls);
   }
 
   Snake.prototype.initSnake = function(init_pos) {
-    var start_pos = init_pos ? init_pos : {x: 10, y: 10};
+    var start_pos = init_pos ? init_pos : {x: 2, y: 2};
     this.default_pos = start_pos;
     this.reset(); // Sets variables to default value
   };
