@@ -24,7 +24,7 @@ io.on('connection', function(socket){
   sockethandler.addClient(socket);
   sockethandler.currentSocket = socket;
 
-  sockets.on('disconnect', sockethandler.disconnect);
+  socket.on('disconnect', sockethandler.disconnect);
 
   socket.on('movement', sockethandler.movement);
   socket.on('score', sockethandler.score);

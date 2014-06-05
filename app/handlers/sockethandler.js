@@ -18,17 +18,18 @@ module.exports = function(io){
       allClients.push(socket);
     },
     disconnect: function(){
-      console.log('Got disconnect!');
+      console.log('Got disconnect! But can not do anything about it');
 
       var i = allClients.indexOf(currentSocket);
+
       delete allClients[i];
     },
     movement: function( data ){
       console.log("YAY I got a movement!");
-      io.sockets.emit('movePlayer', {player: data.player, turn: data.turn});
+      io.broadcast.emit('movePlayer', { player: data.player, turn: data.turn });
     },
     score: function(){
-
+      console.log("score event");
     },
     dead: function(player){
       players.removePlayer(player);
