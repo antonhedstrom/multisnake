@@ -88,6 +88,8 @@ define([
 
   function addPlayer(player) {
     players.push(new Snake($(Settings.playground.target), player));
+    var newPlayerDiv = $("<div></div>").addClass('player').html('player' + player.playerId);
+    $(".players").append(newPlayerDiv);
   }
 
   function addOtherPlayers() {
@@ -98,6 +100,8 @@ define([
       var players = data.players;
       for (var i in players) {
         addPlayer(players[i]);
+        var newPlayerDiv = $(".players").append($("d"));
+        newPlayerDiv.id = "div" + i;
       }
     });
   }
