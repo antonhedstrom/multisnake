@@ -8,22 +8,23 @@ body, html {
   margin: 0;
 }
 
-* { box-sizing: border-box }
+
 
 p {
   margin:1em;
 }
 #game {
-  float: right;
-  width: 85%;
-  height: 100%;
+  margin: 0 auto;
+  padding: 250px 0 0 0;
+  height: 400px;
+  width: 600px;
 }
 #game #tiles {
   /*background-color: #aaa; (No background)*/
-  background-color: purple;
   display:inline-block;
   height: 400px;
   width: 600px;
+  border: 1px solid rgba(40, 40, 40, .3);
   /*box-shadow: 1px 1px 2px 0px #AAA inset;*/
 }
 #game #tiles .tile {
@@ -36,8 +37,9 @@ p {
 
 }
 #game #tiles .tile.snake {
-  background-color:green;
-  border-color:green;
+  /*background-color:green;*/
+  /*border-color:green;*/
+  background-image: url("../img/px.png");
   box-shadow: 1px 1px 1px #AAA;
 }
 #game #tiles .tile.food {
@@ -45,7 +47,8 @@ p {
   border-radius:10px;
 }
 #game #tiles .tile.head {
-  background-color:darkgreen;
+  /*background-color:darkgreen;*/
+  background-image: url("../img/px.png");
 }
 #game #tiles .tile.dead {
   background-color:red;
@@ -58,7 +61,7 @@ p {
   background-image: url("../img/Nokia_3310_empty.jpg");
   background-size: 1000px auto;
   background-repeat: no-repeat;
-  background-position: 65% -400px;
+  background-position: center -400px;
   width: 100%;
   height: 100%;
 }

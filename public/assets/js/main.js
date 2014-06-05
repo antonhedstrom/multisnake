@@ -20,7 +20,7 @@ require([
   Game,
   Settings
 ) {
-  
+
   function adjustPlayground() {
     var pg = $(Settings.playground.target);
     var playground  = {
@@ -36,7 +36,7 @@ require([
   }
   adjustPlayground();
 
-  $(window).resize(adjustPlayground);
+  /*$(window).resize(adjustPlayground);*/
 
   Game.start(Settings.playground);
 
