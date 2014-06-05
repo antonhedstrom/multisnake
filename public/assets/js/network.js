@@ -20,15 +20,17 @@ define([
     eventArray[event].push(listener);
   }
 
+  // Add event callbacks
   addEventListener('newPlayer', function(player) {
     console.log("New player!", player);
   });
+
   addEventListener('deadPlayer', function(player) {
     console.log("Player died :( Fuck him.", player);
   });
 
 
-  // Add handlers
+  // Add handlers without callback method
   socket.on('connect', function() {
     console.log("Connected");
   });
@@ -37,13 +39,16 @@ define([
     console.log("Disconnect");
     socket.emit('score');
   });
+  
 
+  // real ones
   socket.on('newPlayer', function(player) {
     var events = eventArray['newPlayer'];
     $.each(events, function(idx, event) {
       event(player);
     });
   });
+
   socket.on('deadPlayer', function(player) {
     var events = eventArray['deadPlayer'];
     $.each(events, function(idx, event) {
@@ -51,7 +56,7 @@ define([
     });
   });
 
-
+/*
   socket.on('newFood', function(food){
     console.log("food generated", food);
   });
@@ -64,6 +69,7 @@ define([
     // data: { player: {...}, turn: "left|right"}
     console.log("Player moved: ", data.playerId);
   });
+  */
 
   var API = {
     addEventListener: addEventListener,

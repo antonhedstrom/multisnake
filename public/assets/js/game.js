@@ -28,6 +28,9 @@ define([
 
   var intervalID;
 
+  //Network.addEventListener('newPlayer', addPlayer);
+  Network.addEventListener('deadPlayer', removeSnake);
+
   function initGame(options) {
     var self = this;
     var settings = $.extend(true, {}, defaults, options);
@@ -172,14 +175,19 @@ define([
   }
 
   function findSnake(player_id) {
-    var snake = false;
-    $.each(players, function(idx, player) {
-      if ( player.playerId === player_id ) {
-        snake = player;
-        return false;
+    var returnVal = false;
+    _.each(players, function(snake) {
+      console.log(snake.player.playerId, snake);
+      if ( snake.player.playerId === player_id ) {
+        returnVal = snake;
       }
     });
-    return false;
+    return returnVal;
+  }
+
+  function removeSnake(player){
+    var snake = findSnake(player.playerId);
+    snake.die();
   }
 
   return exports;

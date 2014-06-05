@@ -11,6 +11,8 @@ define([
   // CONSTANTS
   var DIR = {UP : 1, RIGHT : 2, DOWN : 3, LEFT : 4};
 
+  
+
   /* Snake class */
   function Snake(options) {
     this.player;
@@ -33,6 +35,7 @@ define([
 
     this.initSnake(options);
     this.initKeyBindings();
+    
   }
 
   Snake.prototype.initSnake = function(options) {
@@ -219,7 +222,7 @@ define([
   Snake.prototype.gameover = function() {
     this.is_running   = false;
     this.is_game_over = true;
-
+    console.log(this.body);
     for ( var i in this.body ) {
       this.findTile(this.body[i].x, this.body[i].y).addClass("dead");
     }
