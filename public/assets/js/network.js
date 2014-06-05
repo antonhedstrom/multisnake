@@ -42,5 +42,14 @@ define([
     console.log("Player moved :( Fuck him.", data);
   });
 
+  var API = {
+    removePlayer: function(player){
+      console.log(player);
+      socket.emit('dead', player);
+    }
+  };
+
+  exports = API;
+
   return exports;
 });

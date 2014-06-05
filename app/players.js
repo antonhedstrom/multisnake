@@ -30,7 +30,8 @@ module.exports = {
     return returnobj;
   },
   removePlayer: function(player){
-    var pos = arrayObjectIndexOf(playerlist, player.Id, "playerId");
+    // Remove player
+    var pos = arrayObjectIndexOf(playerlist, playerId, "playerId");
     playerlist.splice(pos, 1);
   }
 }

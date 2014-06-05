@@ -11,11 +11,6 @@ module.exports = function(io){
         }
       };
 
-      //console.log(players.playerList);
-      /*if(!isInArray(newPlayer, players.playerList)){
-        console.log("is not in array");
-      }*/
-
       // add player
       var playerObj = players.addPlayer(newPlayer);
 

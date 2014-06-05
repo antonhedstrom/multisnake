@@ -167,6 +167,7 @@ define([
       }
     }
     else {
+      Network.removePlayer(self.player);
       this.gameover();
     }
 
@@ -175,7 +176,6 @@ define([
   Snake.prototype.start = function() {
     this.is_running = true;
   };
-
 
   /*
     Function to check if we should queue action.
