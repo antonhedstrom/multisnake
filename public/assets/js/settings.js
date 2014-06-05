@@ -6,11 +6,11 @@ define(function() {
       url: 'localhost'
     },
     game: {
-      speed: 6
+      speed: 4
     },
     playground: {
       target: "#game",
-      tiles: {x:10, y: 10}
+      tiles: {x: 60, y: 40}
     }
   };
 });
