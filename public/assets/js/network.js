@@ -40,7 +40,7 @@ define([
 
   socket.on('movePlayer', function(data) {
     // data: { player: {...}, turn: "left|right"}
-    console.log("Player moved! Fuck him.", data);
+    console.log("Player moved: ", data.playerId);
   });
 
   var API = {
