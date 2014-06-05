@@ -94,6 +94,9 @@ define([
       player: player
     };
     players.push(new Snake(newPlayer));
+
+    var newPlayerDiv = $("<div></div>").addClass('player').html('player' + player.playerId);
+    $(".players").append(newPlayerDiv);
   }
 
   function addPlayers(cb) {
@@ -104,6 +107,8 @@ define([
       var players = data.players;
       for (var i in players) {
         addPlayer(players[i]);
+        var newPlayerDiv = $(".players").append($("d"));
+        newPlayerDiv.id = "div" + i;
       }
       data.me.isMe = true;
       addPlayer(data.me);

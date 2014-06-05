@@ -19,6 +19,7 @@ define([
 
   socket.on('disconnect', function() {
     console.log("Disconnect");
+    socket.emit('score');
   });
 
   socket.on('newPlayer', function(player) {
@@ -39,8 +40,21 @@ define([
 
   socket.on('movePlayer', function(data) {
     // data: { player: {...}, turn: "left|right"}
-    console.log("Player moved :( Fuck him.", data);
+    console.log("Player moved! Fuck him.", data);
   });
+
+  var API = {
+    removePlayer: function(player){
+      console.log(player);
+      socket.emit('dead', player);
+    },
+    makeMove: function(player, action){
+      console.log(player);
+      socket.emit('movement', { player: player.playerId, action: action });
+    }
+  };
+
+  exports = API;
 
   return exports;
 });

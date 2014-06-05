@@ -19,6 +19,23 @@ require([
   Game,
   Settings
 ) {
+  
+  function adjustPlayground() {
+    var pg = $(Settings.playground.target);
+    var playground  = {
+      height: pg.innerHeight(),
+      width: pg.innerWidth()
+    }
+    if (playground.height > playground.width) {
+      playground.height = playground.width;
+    } else {
+      playground.width = playground.height;
+    }
+    pg.width(playground.width).height(playground.height);
+  }
+  adjustPlayground();
+
+  $(window).resize(adjustPlayground);
 
   Game.start(Settings.playground);
 
