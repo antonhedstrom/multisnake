@@ -167,7 +167,7 @@ define([
       }
     }
     else {
-      Network.removePlayer(self.player);
+      Network.removePlayer(this.player);
       this.gameover();
     }
 
@@ -194,6 +194,7 @@ define([
          && (((zero_based_idx + 2) % 4) + 1 != this.direction) // Prevent 180 turn
          && (action != this.direction || allow_same_dir ) // Prevent same direct (no reason)
       ) {
+      Network.makeMove(this.player, action);
       this.action_queue.push(action);
     }
     else if (this.action_queue.length == 1) {

@@ -47,6 +47,10 @@ define([
     removePlayer: function(player){
       console.log(player);
       socket.emit('dead', player);
+    },
+    makeMove: function(player, action){
+      console.log(player);
+      socket.emit('movement', { player: player.playerId, action: action });
     }
   };
 
