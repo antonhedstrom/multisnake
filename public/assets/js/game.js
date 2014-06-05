@@ -30,6 +30,7 @@ define([
 
   //Network.addEventListener('newPlayer', addPlayer);
   Network.addEventListener('deadPlayer', removeSnake);
+  Network.addEventListener('movePlayer', moveSnake);
 
   function initGame(options) {
     var self = this;
@@ -177,12 +178,18 @@ define([
   function findSnake(player_id) {
     var returnVal = false;
     _.each(players, function(snake) {
-      console.log(snake.player.playerId, snake);
       if ( snake.player.playerId === player_id ) {
         returnVal = snake;
       }
     });
     return returnVal;
+  }
+
+  function moveSnake(data){
+    var snake = findSnake(data.playerId);
+    console.log("GOT MOVES LIKE", data);
+    snake.queue(data.action);
+
   }
 
   function removeSnake(player){

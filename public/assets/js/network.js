@@ -56,6 +56,13 @@ define([
     });
   });
 
+  socket.on('movePlayer', function(data) {
+    var events = eventArray['movePlayer'];
+    $.each(events, function(idx, event) {
+      event(data);
+    });
+  });
+
 /*
   socket.on('newFood', function(food){
     console.log("food generated", food);
