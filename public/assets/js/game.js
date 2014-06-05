@@ -7,7 +7,7 @@ define([
 ], function(
   $,
   Settings,
-  Snake_,
+  Snake,
   SnakePlugin,
   Network
 ){
@@ -21,8 +21,10 @@ define([
   var paused = false;
 
   var defaults = {
-    size: {x:20, y:20}
+    size: {x:20, y:11}
   };
+
+  var intervalID;
 
   function initGame(options) {
     var self = this;
@@ -33,6 +35,7 @@ define([
 
     addOtherPlayers();
 
+    startGame();
     // TODO: Timeout: request new player and add me
   }
 
@@ -87,7 +90,12 @@ define([
   }
 
   function addPlayer(player) {
-    players.push(new Snake($(Settings.playground.target), player));
+    var newPlayer = {
+      home: $(Settings.playground.target),
+      player: player
+    };
+    players.push(new Snake(newPlayer));
+
     var newPlayerDiv = $("<div></div>").addClass('player').html('player' + player.playerId);
     $(".players").append(newPlayerDiv);
   }
@@ -103,6 +111,8 @@ define([
         var newPlayerDiv = $(".players").append($("d"));
         newPlayerDiv.id = "div" + i;
       }
+      data.me.isMe = true;
+      addPlayer(data.me);
     });
   }
 
@@ -124,9 +134,9 @@ define([
   }
 
   function run() {
-    for (var i in players) {
-      players[i].run();
-    }
+    $.each(players, function(idx, player) {
+      player[i].run();
+    });
     $(this).removeClass("paused");
   }
 
@@ -143,6 +153,17 @@ define([
       players[i].reset();
     }
     $(this).removeClass("paused");
+  }
+
+  function startGame() {
+    $.each(players, function(idx, player) {
+      player[i].start();
+    });
+    intervalID = window.setInterval(function() {
+      $.each(players, function(idx, player) {
+        player.tick();
+      });
+    }, (10 - Settings.game.speed) * 30);
   }
 
   return exports;

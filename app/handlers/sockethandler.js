@@ -14,13 +14,20 @@ module.exports = function(io){
   return {
     movement: function( data ){
       console.log("YAY I got a movement!");
-      io.emit('movePlayer', {player: data.player, turn: data.turn});
+      io.sockets.emit('movePlayer', {player: data.player, turn: data.turn});
     },
     score: function(){
 
     },
     dead: function(player){
+
+      players.removePlayer(players);
+      
       io.sockets.emit('deadPlayer', player)
+    },
+    foodTaken: function(food){
+      io.sockets.emit('foodEaten', food);
+      // do something with foodz
     },
     init: function( data ){
       console.log("YAY I got someone that wants to play snake!!");

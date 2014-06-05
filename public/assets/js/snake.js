@@ -1,14 +1,21 @@
+define([
+  'network',
+  ], function(
+    Network
+  ){
 
-// Snake!
-(function(exports){
-  exports.Snake = Snake;
+  var exports = {};
+
+  exports = Snake;
 
   // CONSTANTS
   var DIR = {UP : 1, RIGHT : 2, DOWN : 3, LEFT : 4};
 
   /* Snake class */
-  function Snake(home, options) {
-    this.$myhome = home; // The jQuery object where I live
+  function Snake(options) {
+    this.player;
+
+    this.$myhome; // The jQuery object where I live
     this.interval_id;   //Save id of interval so we can stop it.
     this.default_pos;   //Start here
     this.food;          //There might be foooood.
@@ -25,13 +32,14 @@
     this.action_queue = []; //Queue when controller is pressed
     this.controlls = [];    //Array of how to control the snake
 
-    this.initSnake(options.startPos);
-    this.initKeyBindings(options.controlls);
+    this.initSnake(options);
+    this.initKeyBindings();
   }
 
-  Snake.prototype.initSnake = function(init_pos) {
-    var start_pos = init_pos;
-    this.default_pos = start_pos;
+  Snake.prototype.initSnake = function(options) {
+    this.default_pos = options.player.startPos;
+    this.player = options.player;
+    this.$myhome = options.home;
     this.reset(); // Sets variables to default value
   };
 
@@ -59,11 +67,17 @@
   Snake.prototype.initKeyBindings = function(controlls) {
     var self = this;
     var action;
+
     var default_controlls = [];
     default_controlls[119] = "UP";
     default_controlls[97] = "LEFT";
     default_controlls[115] = "DOWN";
     default_controlls[100] = "RIGHT";
+
+    if ( !this.player.isMe ) {
+      console.log("I am not me.");
+      return;
+    }
 
     if ( !controlls ) {
       controlls = default_controlls;
@@ -91,98 +105,100 @@
     this.controlls = controlls;
 
     $("body").keypress(function(e) {
-      queue(self.controlls[e.keyCode] || false);
-      if ( !self.is_running && !self.is_game_over ) {
-        queue(self.controlls[e.keyCode] || false, true);
+      self.queue(self.controlls[e.keyCode] || false);
+      if ( !(self.is_running || self.is_game_over) ) {
+        self.queue(self.controlls[e.keyCode] || false, true);
         if ( self.action_queue.length > 0 ) {
           // We have actions, lets start!
-          self.run();
+          self.start();
         }
       }
 
-      /*
-        Function to check if we should queue action.
-        * Dont queue more than 2 actions.
-        * Dont queue an action that make the snake turn 180 degrees.
-        * Dont queue an action that means going same direction as we move.
-      */
-      function queue(action, allow_same_dir) {
-        var zero_based_idx;
-        if ( !action ) {
-          return;
-        }
-        zero_based_idx = action - 1;
-
-        if ( self.action_queue.length == 0
-             && (((zero_based_idx + 2) % 4) + 1 != self.direction) // Prevent 180 turn
-             && (action != self.direction || allow_same_dir ) // Prevent same direct (no reason)
-          ) {
-          self.action_queue.push(action);
-        }
-        else if (self.action_queue.length == 1) {
-          self.action_queue.push(action);
-        }
-      }
     });
   };
 
-
-  Snake.prototype.run = function() {
-    var self = this;
-    if ( this.is_running ) {
+  Snake.prototype.tick = function() {
+    if ( !this.is_running ) {
       return;
     }
+
+    var current_pos = this.body[this.body.length - 1];
+    var new_pos = {
+      x: current_pos.x,
+      y: current_pos.y
+    };
+    var $food;
+
+    if ( this.action_queue.length > 0 ) {
+      this.direction = this.action_queue.shift();
+    }
+    switch(this.direction) {
+      case DIR.UP :
+        new_pos.y--;
+        this.body.push(new_pos);
+        break;
+      case DIR.RIGHT :
+        new_pos.x++;
+        this.body.push(new_pos);
+        break;
+      case DIR.DOWN :
+        new_pos.y++;
+        this.body.push(new_pos);
+        break;
+      case DIR.LEFT :
+        new_pos.x--;
+        this.body.push(new_pos);
+        break;
+    }
+
+    if ( this.isAlive() ) {
+      if ( this.findTile(new_pos.x, new_pos.y).hasClass("food") ) {
+        $food = this.findTile(new_pos.x, new_pos.y);
+        //Network.foodEaten($food.data("id"), player.id);
+        this.growth += this.growth + 3;
+        this.score += $food.data("score");
+        console.log("Du har " + this.score + " poäng.");
+        $food.removeClass("food");
+      }
+
+      this.updateSnakeUI(this.growth == 0);
+      if ( this.growth > 0 ) {
+        this.growth--;
+      }
+    }
+    else {
+      this.gameover();
+    }
+
+  };
+
+  Snake.prototype.start = function() {
     this.is_running = true;
-    self.interval_id = window.setInterval(function() {
-      var current_pos = self.body[self.body.length - 1];
-      var new_pos = {
-        x: current_pos.x,
-        y: current_pos.y
-      };
-      var $food;
-
-      if ( self.action_queue.length > 0 ) {
-        self.direction = self.action_queue.shift();
-      }
-      switch(self.direction) {
-        case DIR.UP :
-          new_pos.y--;
-          self.body.push(new_pos);
-          break;
-        case DIR.RIGHT :
-          new_pos.x++;
-          self.body.push(new_pos);
-          break;
-        case DIR.DOWN :
-          new_pos.y++;
-          self.body.push(new_pos);
-          break;
-        case DIR.LEFT :
-          new_pos.x--;
-          self.body.push(new_pos);
-          break;
-      }
-
-      if ( self.isAlive() ) {
-        if ( self.findTile(new_pos.x, new_pos.y).hasClass("food") ) {
-          $food = self.findTile(new_pos.x, new_pos.y);
-          self.growth += self.growth + 3;
-          self.score += $food.data("score");
-          console.log("Du har " + self.score + " poäng.");
-          $food.removeClass("food");
-        }
+  };
 
 
-        self.updateSnakeUI(self.growth == 0);
-        if ( self.growth > 0 ) {
-          self.growth--;
-        }
-      }
-      else {
-        self.gameover();
-      }
-    }, (10 - self.speed) * 10); // Update
+  /*
+    Function to check if we should queue action.
+    * Dont queue more than 2 actions.
+    * Dont queue an action that make the snake turn 180 degrees.
+    * Dont queue an action that means going same direction as we move.
+  */
+  Snake.prototype.queue = function(action, allow_same_dir) {
+    var zero_based_idx;
+    if ( !action ) {
+      return;
+    }
+    zero_based_idx = action - 1;
 
+    if ( this.action_queue.length == 0
+         && (((zero_based_idx + 2) % 4) + 1 != this.direction) // Prevent 180 turn
+         && (action != this.direction || allow_same_dir ) // Prevent same direct (no reason)
+      ) {
+      this.action_queue.push(action);
+    }
+    else if (this.action_queue.length == 1) {
+      this.action_queue.push(action);
+    }
   };
 
   Snake.prototype.pause = function() {
@@ -220,13 +236,13 @@
     var tail      = delete_tail ? this.body.shift() : this.body[0];
 
     if ( delete_tail ) {
-      this.findTile(tail.x, tail.y).removeClass("snake head tail");
+      this.findTile(tail.x, tail.y).removeClass("snake me head tail");
     }
     else {
       this.findTile(tail.x, tail.y).addClass("tail");
     }
     this.findTile(prev_head.x, prev_head.y).removeClass("head");
-    this.findTile(head.x, head.y).addClass("snake head");
+    this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : ""));
   };
 
   function calcFoodScore(food) {
@@ -237,4 +253,6 @@
     return this.$myhome.find("#tilerow_"+y + " .tilecol_" + x);
   }
 
-})(window);
+  return exports;
+
+});
