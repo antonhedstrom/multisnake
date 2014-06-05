@@ -17,6 +17,8 @@ define([
 
   exports.start = initGame;
 
+
+
   // Array of players
   var players = [];
   //var me = new Snake($(Settings.playground.target), {start_pos: {x: 3, y: 3}});
@@ -27,6 +29,8 @@ define([
   };
 
   var intervalID;
+
+  var intervalID_food;
 
   //Network.addEventListener('newPlayer', addPlayer);
   Network.addEventListener('deadPlayer', removeSnake);
@@ -134,6 +138,19 @@ define([
         player.tick();
       });
     }, (10 - Settings.game.speed) * 30);
+
+    intervalID_food = window.setInterval(function() {
+      var food_pos = {
+        x: Math.floor(Math.random()*Settings.playground.tiles.x),
+        y: Math.floor(Math.random()*Settings.playground.tiles.y),
+      }
+
+      $(Settings.playground.target)
+        .find("#tilerow_" +food_pos.y + " .tilecol_" + food_pos.x)
+        .addClass("food");
+
+      console.log("Food!", food_pos);
+    }, Math.floor(Math.random()*4000));
   }
 
   function pauseOrRun() {
@@ -196,6 +213,8 @@ define([
     var snake = findSnake(player.playerId);
     snake.die();
   }
+
+
 
   return exports;
 });
