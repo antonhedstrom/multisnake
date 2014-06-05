@@ -46,24 +46,24 @@ define([
       .addClass("tilerow")
       .css({
         width: "100%",
-        height: 100/settings.size.y + "%"
+        height: 100/settings.tiles.y + "%"
       });
     var $tile  = $("<div />")
       .addClass("tile")
       .css({
-        width:  100/settings.size.x + "%",
+        width:  100/settings.tiles.x + "%",
         height: "100%",
       });
     var $score = $("<div />").attr("id", "score");
     var i;
     var $element = $(settings.target);
 
-    for (i = 0; i < settings.size.x; i++) {
+    for (i = 0; i < settings.tiles.x; i++) {
       $tile.removeClass("tilecol_" + (i - 1));
       $tile.addClass("tilecol_" + i);
       $tile_row.append($tile.clone());
     }
-    for (i = 0; i < settings.size.y; i++) {
+    for (i = 0; i < settings.tiles.y; i++) {
       $tile_row.attr("id", "tilerow_" + i);
       $tiles_container.append($tile_row.clone());
     }
