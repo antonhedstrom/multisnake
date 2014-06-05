@@ -1,14 +1,17 @@
 body, html {
-  font-family: monospace;
+  font-family: Nokian;
   font-size: 14pt;
   color: orange;
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
+  letter-spacing: 3px;
 }
-
-
+@font-face {
+  font-family: Nokian;
+  src: url("../fonts/Nokian.ttf");
+}
 
 p {
   margin:1em;
@@ -54,7 +57,7 @@ p {
   background-image: url("../img/px.png");
 }
 #game #tiles .tile.dead {
-  background-color:red;
+  background-color:orange;
 }
 /* PAUSED */
 #game.paused #tiles .tile {
@@ -78,15 +81,14 @@ p {
   z-index: 2;
 }
 .information-container .top-container {
-  height: 53px;
   width: 100%;
   background-color: #464646;
   float: left;
 }
 .information-container .top-container span {
   display:block;
-  margin: 13px;
-  padding-left: 27px;
+  margin: 10px 10px 7px 10px;
+  font-size: 26px;
  }
 .information-container .information {
   height: 100%;
@@ -97,22 +99,23 @@ p {
   -moz-box-shadow: 0 2px 5px #aaa inset;
   -webkit-box-shadow: 0px 2px 5px #aaa inset;
   box-shadow: 0px 2px 5px #aaa inset;
-  background-color: #eee;
+  background-color: rgba(255, 255, 255, .4);
   float: left;
 }
 .information-container .information .player:nth-child(odd) {
-  background-color: #ccc;
+  background-color: rgba(250, 250, 250, .4);
 }
 .information-container .information .player:nth-child(even) {
-  background-color: orange;
-  color: #ccc;
+  background-color: rgba(230, 230, 230, .6);
+  color: #37462f;
 }
 .information-container .information .player {
-  -moz-box-shadow: -3px 0 6px -2px #aaa inset;
-  -webkit-box-shadow: -3px 0 6px -2px #aaa inset;
-  box-shadow: -3px 0 6px -2px #aaa inset;
-  padding-left: 10px;
-  font-size: 12pt;
+  /*-moz-box-shadow: -3px 0 6px -2px #aaa inset;*/
+  /*-webkit-box-shadow: -3px 0 6px -2px #aaa inset;*/
+  /*box-shadow: -3px 0 6px -2px #aaa inset;*/
+  padding: 10px 5px 7px 10px;
+  font-size: 10pt;
+  text-transform: uppercase;
 }
 .information-container .information .player .points {
   float: right;
