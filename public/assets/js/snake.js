@@ -16,7 +16,6 @@ define([
     this.player;
 
     this.$myhome; // The jQuery object where I live
-    this.interval_id;   //Save id of interval so we can stop it.
     this.default_pos;   //Start here
     this.food;          //There might be foooood.
 
@@ -170,7 +169,9 @@ define([
       }
     }
     else {
-      Network.removePlayer(this.player);
+      if ( this.player.isMe ) {
+        Network.removePlayer(this.player);
+      }
       this.gameover();
     }
 
@@ -178,6 +179,12 @@ define([
 
   Snake.prototype.start = function() {
     this.is_running = true;
+  };
+
+  Snake.prototype.die = function() {
+    for ( var i in this.body ) {
+      this.findTile(this.body[i].x, this.body[i].y).removeClass("snake head tail me dead");
+    }
   };
 
   /*
@@ -207,13 +214,11 @@ define([
 /*
   Snake.prototype.pause = function() {
     this.is_running = false;
-    window.clearInterval(this.interval_id);
   };
 */
   Snake.prototype.gameover = function() {
     this.is_running   = false;
     this.is_game_over = true;
-    window.clearInterval(this.interval_id);
 
     for ( var i in this.body ) {
       this.findTile(this.body[i].x, this.body[i].y).addClass("dead");
