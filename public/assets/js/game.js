@@ -1,11 +1,13 @@
 define([
   'jquery',
+  'underscore',
   'settings',
   'snake',
   'snake_plugin',
   'network',
 ], function(
   $,
+  _,
   Settings,
   Snake,
   SnakePlugin,
@@ -105,10 +107,13 @@ define([
       method: 'GET'
     }).done(function(data) {
       var players = data.players;
+
       for (var i in players) {
-        addPlayer(players[i]);
-        var newPlayerDiv = $(".players").append($("d"));
-        newPlayerDiv.id = "div" + i;
+        if(!_.isEqual(players[i], data.me)){
+          addPlayer(players[i]);
+          var newPlayerDiv = $(".players").append($("d"));
+          newPlayerDiv.id = "div" + i;
+        }
       }
       data.me.isMe = true;
       addPlayer(data.me);
