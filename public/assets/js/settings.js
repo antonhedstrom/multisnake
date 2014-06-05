@@ -6,7 +6,7 @@ define(function() {
       url: 'localhost'
     },
     game: {
-      speed: 4
+      speed: 7
     },
     playground: {
       target: "#game",
