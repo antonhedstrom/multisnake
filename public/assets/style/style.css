@@ -80,6 +80,7 @@ p {
   height: 100%;
   width: 180px;
   z-index: 2;
+  overflow: hidden;
 }
 .information-container .top-container {
   width: 100%;
