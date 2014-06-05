@@ -203,9 +203,10 @@ define([
   }
 
   function moveSnake(data){
-    var snake = findSnake(data.playerId);
+    var snake = findSnake(data.player);
     console.log("GOT MOVES LIKE", data);
-    snake.queue(data.action);
+    //snake.queue(data.action);
+    //snake.body = data.body;
 
   }
 

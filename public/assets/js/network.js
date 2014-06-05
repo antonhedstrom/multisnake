@@ -84,9 +84,9 @@ define([
       console.log(player);
       socket.emit('dead', player);
     },
-    makeMove: function(player, action){
+    makeMove: function(player, action, body){
       console.log(player);
-      socket.emit('movement', { player: player.playerId, action: action });
+      socket.emit('movement', { player: player.playerId, action: action, body: body });
     },
     deadPlayer: function() {
 

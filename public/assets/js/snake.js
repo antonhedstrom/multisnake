@@ -109,8 +109,14 @@ define([
 
     $("body").keypress(function(e) {
       self.queue(self.controlls[e.keyCode] || false);
+
+      /*if(self.controlls[e.keyCode]){
+        Network.makeMove(self.player, action, self.body);
+      }*/
+
       if ( !(self.is_running || self.is_game_over) ) {
-        self.queue(self.controlls[e.keyCode] || false, true);
+        //self.queue(self.controlls[e.keyCode] || false, true);
+        
         if ( self.action_queue.length > 0 ) {
           // We have actions, lets start!
           self.start();
@@ -207,7 +213,6 @@ define([
          && (((zero_based_idx + 2) % 4) + 1 != this.direction) // Prevent 180 turn
          && (action != this.direction || allow_same_dir ) // Prevent same direct (no reason)
       ) {
-      Network.makeMove(this.player, action);
       this.action_queue.push(action);
     }
     else if (this.action_queue.length == 1) {

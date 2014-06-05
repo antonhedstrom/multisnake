@@ -27,7 +27,7 @@ module.exports = function(io){
     movement: function( data ){
       console.log("YAY I got a movement!");
       console.log(data);
-      io.sockets.emit('movePlayer', { playerId: data.player, action: data.action });
+      io.sockets.emit('movePlayer', data);
     },
     score: function(){
       console.log("score event");
