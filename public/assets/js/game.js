@@ -21,7 +21,7 @@ define([
   var paused = false;
 
   var defaults = {
-    size: {x:20, y:11}
+    size: {x: 20, y: 11}
   };
 
   var intervalID;
@@ -33,9 +33,8 @@ define([
     buildPlayground(settings);
     initKeyBindings();
 
-    addOtherPlayers();
+    addPlayers(startGame);
 
-    startGame();
     // TODO: Timeout: request new player and add me
   }
 
@@ -74,7 +73,7 @@ define([
   function initKeyBindings() {
     $("body").keyup(function(e) {
       // Globally used keys
-      switch(e.keyCode) {
+      /*switch(e.keyCode) {
         case 27 : // Escape
           gameover();
           reset();
@@ -85,7 +84,7 @@ define([
         case 32 : // Space
           pauseOrRun();
           break;
-      }
+      }*/
     });
   }
 
@@ -97,18 +96,30 @@ define([
     players.push(new Snake(newPlayer));
   }
 
-  function addOtherPlayers() {
+  function addPlayers(cb) {
     $.ajax({
       url: '/getgame',
       method: 'GET'
-    }).done(function(data){
+    }).done(function(data) {
       var players = data.players;
       for (var i in players) {
         addPlayer(players[i]);
       }
       data.me.isMe = true;
       addPlayer(data.me);
+      cb();
     });
+  }
+
+  function startGame() {
+    $.each(players, function(idx, player) {
+      player.start();
+    });
+    intervalID = window.setInterval(function() {
+      $.each(players, function(idx, player) {
+        player.tick();
+      });
+    }, (10 - Settings.game.speed) * 30);
   }
 
   function pauseOrRun() {
@@ -150,15 +161,15 @@ define([
     $(this).removeClass("paused");
   }
 
-  function startGame() {
+  function findSnake(player_id) {
+    var snake = false;
     $.each(players, function(idx, player) {
-      player[i].start();
+      if ( player.playerId === player_id ) {
+        snake = player;
+        return false;
+      }
     });
-    intervalID = window.setInterval(function() {
-      $.each(players, function(idx, player) {
-        player.tick();
-      });
-    }, (10 - Settings.game.speed) * 30);
+    return false;
   }
 
   return exports;

@@ -1,8 +1,8 @@
 define([
   'network',
-  ], function(
-    Network
-  ){
+], function(
+  Network
+){
 
   var exports = {};
 
@@ -78,6 +78,7 @@ define([
       console.log("I am not me.");
       return;
     }
+    console.log("I AM me.");
 
     if ( !controlls ) {
       controlls = default_controlls;
@@ -141,14 +142,14 @@ define([
         new_pos.x++;
         this.body.push(new_pos);
         break;
-      case DIR.DOWN :
-        new_pos.y++;
-        this.body.push(new_pos);
-        break;
       case DIR.LEFT :
         new_pos.x--;
         this.body.push(new_pos);
         break;
+      case DIR.DOWN :
+      default :
+        new_pos.y++;
+        this.body.push(new_pos);
     }
 
     if ( this.isAlive() ) {
@@ -161,7 +162,9 @@ define([
         $food.removeClass("food");
       }
 
+      // Move snake
       this.updateSnakeUI(this.growth == 0);
+
       if ( this.growth > 0 ) {
         this.growth--;
       }
@@ -175,7 +178,6 @@ define([
   Snake.prototype.start = function() {
     this.is_running = true;
   };
-
 
   /*
     Function to check if we should queue action.
@@ -200,12 +202,12 @@ define([
       this.action_queue.push(action);
     }
   };
-
+/*
   Snake.prototype.pause = function() {
     this.is_running = false;
     window.clearInterval(this.interval_id);
   };
-
+*/
   Snake.prototype.gameover = function() {
     this.is_running   = false;
     this.is_game_over = true;
@@ -244,10 +246,6 @@ define([
     this.findTile(prev_head.x, prev_head.y).removeClass("head");
     this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : ""));
   };
-
-  function calcFoodScore(food) {
-    return food.score;
-  }
 
   Snake.prototype.findTile = function(x, y) {
     return this.$myhome.find("#tilerow_"+y + " .tilecol_" + x);
