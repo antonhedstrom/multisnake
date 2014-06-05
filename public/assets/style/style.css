@@ -15,8 +15,8 @@ p {
 }
 #game {
   margin-left: -300px;
-  margin-top: -25px;
-  top: 30%;
+  margin-top: -200px;
+  top: 50%;
   left: 50%;
   position: absolute;
   height: 400px;
@@ -64,7 +64,7 @@ p {
   background-image: url("../img/Nokia_3310_empty.jpg");
   background-size: 1000px auto;
   background-repeat: no-repeat;
-  background-position: center 30%;
+  background-position: center 50%;
   width: 100%;
   height: 100%;
 }
