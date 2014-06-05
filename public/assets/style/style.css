@@ -58,6 +58,7 @@ p {
 }
 #game #tiles .tile.dead {
   background-color:orange;
+  background-image: url("../img/px.png");
 }
 /* PAUSED */
 #game.paused #tiles .tile {
