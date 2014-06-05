@@ -19,10 +19,18 @@ app.get('/getgame', ajaxhandler.getgame);
 
 
 io.on('connection', function(socket){
+
+  // Add to current connected clients
+  sockethandler.addClient(socket);
+  sockethandler.currentSocket = socket;
+
+  socket.on('disconnect', sockethandler.disconnect);
+
   socket.on('movement', sockethandler.movement);
   socket.on('score', sockethandler.score);
   socket.on('dead', sockethandler.dead);
-  socket.on('init', sockethandler.init);
+  //socket.on('init', sockethandler.init);
+
 });
 
 http.listen(1337, function(){

@@ -1,8 +1,8 @@
 define([
   'network',
-  ], function(
-    Network
-  ){
+], function(
+  Network
+){
 
   var exports = {};
 
@@ -16,7 +16,6 @@ define([
     this.player;
 
     this.$myhome; // The jQuery object where I live
-    this.interval_id;   //Save id of interval so we can stop it.
     this.default_pos;   //Start here
     this.food;          //There might be foooood.
 
@@ -78,6 +77,7 @@ define([
       console.log("I am not me.");
       return;
     }
+    console.log("I AM me.");
 
     if ( !controlls ) {
       controlls = default_controlls;
@@ -141,14 +141,14 @@ define([
         new_pos.x++;
         this.body.push(new_pos);
         break;
-      case DIR.DOWN :
-        new_pos.y++;
-        this.body.push(new_pos);
-        break;
       case DIR.LEFT :
         new_pos.x--;
         this.body.push(new_pos);
         break;
+      case DIR.DOWN :
+      default :
+        new_pos.y++;
+        this.body.push(new_pos);
     }
 
     if ( this.isAlive() ) {
@@ -161,12 +161,17 @@ define([
         $food.removeClass("food");
       }
 
+      // Move snake
       this.updateSnakeUI(this.growth == 0);
+
       if ( this.growth > 0 ) {
         this.growth--;
       }
     }
     else {
+      if ( this.player.isMe ) {
+        Network.removePlayer(this.player);
+      }
       this.gameover();
     }
 
@@ -176,6 +181,11 @@ define([
     this.is_running = true;
   };
 
+  Snake.prototype.die = function() {
+    for ( var i in this.body ) {
+      this.findTile(this.body[i].x, this.body[i].y).removeClass("snake head tail me dead");
+    }
+  };
 
   /*
     Function to check if we should queue action.
@@ -194,22 +204,21 @@ define([
          && (((zero_based_idx + 2) % 4) + 1 != this.direction) // Prevent 180 turn
          && (action != this.direction || allow_same_dir ) // Prevent same direct (no reason)
       ) {
+      Network.makeMove(this.player, action);
       this.action_queue.push(action);
     }
     else if (this.action_queue.length == 1) {
       this.action_queue.push(action);
     }
   };
-
+/*
   Snake.prototype.pause = function() {
     this.is_running = false;
-    window.clearInterval(this.interval_id);
   };
-
+*/
   Snake.prototype.gameover = function() {
     this.is_running   = false;
     this.is_game_over = true;
-    window.clearInterval(this.interval_id);
 
     for ( var i in this.body ) {
       this.findTile(this.body[i].x, this.body[i].y).addClass("dead");
@@ -244,10 +253,6 @@ define([
     this.findTile(prev_head.x, prev_head.y).removeClass("head");
     this.findTile(head.x, head.y).addClass("snake head " + (this.player.isMe ? "me" : ""));
   };
-
-  function calcFoodScore(food) {
-    return food.score;
-  }
 
   Snake.prototype.findTile = function(x, y) {
     return this.$myhome.find("#tilerow_"+y + " .tilecol_" + x);
